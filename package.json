@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "five-bells-condition": "^5.0.1",
+    "ripple-lib": "^1.10.1",
+    "xrpl": "^2.11.0"
+  }
+}
