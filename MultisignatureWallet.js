@@ -1,26 +1,36 @@
-const bitcoin = require('bitcoinjs-lib');
+const crypto = require('crypto-js');
 
-// Generate private keys for each signer (In a real scenario, these should be securely generated and stored)
+// Simulated participants' private keys
 const privateKeys = [
   'privateKey1',
   'privateKey2',
-  // ... add more private keys as needed
+  'privateKey3'
 ];
 
-// Convert private keys to key pairs
-const keyPairs = privateKeys.map(privateKey => bitcoin.ECPair.fromPrivateKey(Buffer.from(privateKey, 'hex')));
+// Simulated transaction details
+const transaction = {
+  sender: 'senderAddress',
+  recipient: 'recipientAddress',
+  amount: 10
+};
 
-// Create a redeem script that enforces the multisignature requirement (2 of 3 signatures)
-const multisigScript = bitcoin.script.compile([
-  bitcoin.opcodes.OP_2,
-  keyPairs[0].publicKey,
-  keyPairs[1].publicKey,
-  keyPairs[2].publicKey,
-  bitcoin.opcodes.OP_3,
-  bitcoin.opcodes.OP_CHECKMULTISIG,
-]);
+// Simulated signatures from participants
+const signatures = privateKeys.map(privateKey => {
+  const signature = crypto.HmacSHA256(JSON.stringify(transaction), privateKey).toString();
+  return signature;
+});
 
-// Generate a P2SH address from the multisig script
-const multisigAddress = bitcoin.payments.p2sh({ redeem: { output: multisigScript, network: bitcoin.networks.bitcoin } }).address;
+// Number of required signatures
+const requiredSignatures = 2;
 
-console.log('Multisig Address:', multisigAddress);
+// Verify if the required number of signatures is met
+if (signatures.length >= requiredSignatures) {
+  console.log('Required number of signatures met.');
+  
+  // Simulate combining signatures and executing the transaction
+  console.log('Executing transaction...');
+  console.log('Transaction:', transaction);
+  console.log('Signatures:', signatures);
+} else {
+  console.log('Required number of signatures not met.');
+}
