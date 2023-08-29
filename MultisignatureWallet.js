@@ -11,7 +11,7 @@ const privateKeys = [
 const transaction = {
   sender: 'senderAddress',
   recipient: 'recipientAddress',
-  amount: 10
+  amount: 100
 };
 
 // Simulated signatures from participants
